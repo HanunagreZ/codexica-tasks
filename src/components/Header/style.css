@@ -1,0 +1,14 @@
+.header {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  background-color: rgb(197, 226, 146);
+}
+
+.modal-btn {
+  padding: 5px 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,17 @@
+.persons {
+  min-height: calc(100vh - 120px);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-panel {
+  display: flex;
+  gap: 20px;
+}
+
+.btn {
+  padding: 5px 10px;
+  cursor: pointer;
+}
