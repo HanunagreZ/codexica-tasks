@@ -5,28 +5,32 @@ import sortingDataDesc from "../../utils/SortingDataDesc";
 import "./style.css";
 import useDebounce from "../hooks/useDebounce";
 
-const PeopleList = () => {
+const PersonsList2 = () => {
   const [data, setData] = useState([]);
   const [inputText, setInputText] = useState("");
-  const debouncedSearch = useDebounce(inputText, 0);
+  const debouncedSearch = useDebounce(inputText);
 
-  async function handleChange(e) {
-    setInputText(e.target.value);
-
+  async function getPeople(query) {
     const response = await axios.get(
-      `https://swapi.dev/api/people/?search=${e.target.value}`
+      `https://swapi.dev/api/people/?search=${query}`
     );
+    if (inputText !== "") {
+      sortingDataAsc(response.data.results, setData);
+      return;
+    }
+    setData(response.data.results);
+  }
 
-    sortingDataAsc(response.data.results, setData);
+  function handleChange(e) {
+    setInputText(e.target.value);
   }
 
   useEffect(() => {
-    console.log("useEffect");
-    console.log(debouncedSearch + "deb");
-    axios
-      .get("https://swapi.dev/api/people/")
-      .then((res) => setData(res.data.results));
-  }, []);
+    const startLoad = async () => {
+      await getPeople(debouncedSearch);
+    };
+    startLoad();
+  }, [debouncedSearch]);
 
   return (
     <div className="persons">
@@ -56,4 +60,4 @@ const PeopleList = () => {
   );
 };
 
-export default PeopleList;
+export default PersonsList2;

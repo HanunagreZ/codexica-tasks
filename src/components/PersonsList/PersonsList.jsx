@@ -5,28 +5,28 @@ import sortingDataDesc from "../../utils/SortingDataDesc";
 import "./style.css";
 import useDebounce from "../hooks/useDebounce";
 
-const PeopleList2 = () => {
+const PersonsList = () => {
   const [data, setData] = useState([]);
   const [inputText, setInputText] = useState("");
-  const debouncedSearch = useDebounce(inputText);
+  const debouncedSearch = useDebounce(inputText, 0);
 
-  async function getPeople(query) {
-    const response = await axios.get(
-      `https://swapi.dev/api/people/?search=${query}`
-    );
-    setData(response.data.results);
-  }
-
-  function handleChange(e) {
+  async function handleChange(e) {
     setInputText(e.target.value);
+
+    const response = await axios.get(
+      `https://swapi.dev/api/people/?search=${e.target.value}`
+    );
+
+    sortingDataAsc(response.data.results, setData);
   }
 
   useEffect(() => {
-    const startLoad = async () => {
-      await getPeople(debouncedSearch);
-    };
-    startLoad();
-  }, [debouncedSearch]);
+    console.log("useEffect");
+    console.log(debouncedSearch + "deb");
+    axios
+      .get("https://swapi.dev/api/people/")
+      .then((res) => setData(res.data.results));
+  }, []);
 
   return (
     <div className="persons">
@@ -56,4 +56,4 @@ const PeopleList2 = () => {
   );
 };
 
-export default PeopleList2;
+export default PersonsList;
