@@ -1,32 +1,32 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import sortingDataAsc from "../../utils/SortingDataAsc";
-import sortingDataDesc from "../../utils/SortingDataDesc";
-import "./style.css";
-import useDebounce from "../hooks/useDebounce";
+import { useState } from 'react';
+import useDebounce from '../hooks/useDebounce';
+import useFetch from '../hooks/useFetch';
+import sortingDataAsc from '../../utils/SortingDataAsc';
+import sortingDataDesc from '../../utils/SortingDataDesc';
+import Button from '../Button/Button';
+import './style.css';
+
+const BASE_URL = 'https://swapi.dev/api/people/';
 
 const PersonsList = () => {
-  const [data, setData] = useState([]);
-  const [inputText, setInputText] = useState("");
-  const debouncedSearch = useDebounce(inputText, 0);
+  const [inputText, setInputText] = useState('');
+  const debouncedSearch = useDebounce(inputText);
 
-  async function handleChange(e) {
+  const { data, isLoading, error, setData } = useFetch(
+    `${BASE_URL}?search=${debouncedSearch}`
+  );
+
+  function handleChange(e) {
     setInputText(e.target.value);
-
-    const response = await axios.get(
-      `https://swapi.dev/api/people/?search=${e.target.value}`
-    );
-
-    sortingDataAsc(response.data.results, setData);
   }
 
-  useEffect(() => {
-    console.log("useEffect");
-    console.log(debouncedSearch + "deb");
-    axios
-      .get("https://swapi.dev/api/people/")
-      .then((res) => setData(res.data.results));
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="persons">
@@ -37,21 +37,20 @@ const PersonsList = () => {
           value={inputText}
           onChange={handleChange}
         />
-        <button className="btn" onClick={() => sortingDataAsc(data, setData)}>
-          Sort Asc
-        </button>
-        <button className="btn" onClick={() => sortingDataDesc(data, setData)}>
+        <Button onClick={() => sortingDataDesc(data, setData)}>
           Sort Desc
-        </button>
+        </Button>
+        <Button onClick={() => sortingDataAsc(data, setData)}>Sort Asc</Button>
       </div>
       <p>You search for: {inputText}</p>
       <hr />
-
-      {data.map((item) => (
-        <div key={item.url}>
-          <h1>{item.name}</h1>
-        </div>
-      ))}
+      {data && (
+        <ul>
+          {data.results.map((item) => (
+            <li key={item.url}>{item.name}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

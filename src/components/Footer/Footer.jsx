@@ -1,5 +1,5 @@
-import "./style.css";
-import useResize from "../hooks/useResize";
+import useResize from '../hooks/useResize';
+import './style.css';
 
 const Footer = () => {
   const { width, height } = useResize();

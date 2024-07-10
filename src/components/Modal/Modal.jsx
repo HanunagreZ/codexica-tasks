@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
-import "./style.css";
-import iconClose from "./icon-close.png";
+import { createPortal } from 'react-dom';
+import { useEffect } from 'react';
+import './style.css';
+
+const modalRootElement = document.getElementById('modal');
 
 const Modal = ({ isOpen, onClose, children }) => {
   useEffect(() => {
@@ -9,16 +11,17 @@ const Modal = ({ isOpen, onClose, children }) => {
     }
   });
 
-  return (
-    <>
-      {isOpen && (
-        <div className="modal">
-          <div className="modal-wrapper">
-            <div className="modal-content">{children}</div>
-          </div>
-        </div>
-      )}
-    </>
+  if (!isOpen) {
+    return null;
+  }
+
+  return createPortal(
+    <div className="modal">
+      <div className="modal-wrapper">
+        <div className="modal-content">{children}</div>
+      </div>
+    </div>,
+    modalRootElement
   );
 };
 

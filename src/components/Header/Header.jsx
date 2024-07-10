@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import "./style.css";
-import Modal from "../Modal/Modal";
+import { useState } from 'react';
+import Modal from '../Modal/Modal';
+import './style.css';
 
 const Header = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <header className="header">
       <h3>Header</h3>
-      <button className="modal-btn" onClick={() => setModalIsOpen(true)}>
+      <button className="modal-btn" onClick={() => setIsModalOpen(true)}>
         Open
       </button>
-      <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2>Modal info</h2>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem

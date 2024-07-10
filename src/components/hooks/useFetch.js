@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const useFetch = (url) => {
   const [fetchData, setFetchData] = useState(null);
@@ -6,12 +6,11 @@ const useFetch = (url) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("useFetch применился");
     const fetchData = async () => {
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error("Request failed");
+          throw new Error('Request failed');
         }
         const jsonData = await response.json();
         setFetchData(jsonData);
