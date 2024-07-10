@@ -1,30 +1,20 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import sortingDataAsc from "../../utils/SortingDataAsc";
 import sortingDataDesc from "../../utils/SortingDataDesc";
 import "./style.css";
-//import v from "../hooks/useDebounce";
+import useDebounce from "../hooks/useDebounce";
 import useFetch from "../hooks/useFetch";
 
 const BASE_URL = "https://swapi.dev/api/people/";
 
-const PersonsList2 = () => {
+const PersonsList3 = () => {
   //const [data, setData] = useState([]);
   const [inputText, setInputText] = useState("");
-  //const debouncedSearch = useDebounce(inputText);
+  const debouncedSearch = useDebounce(inputText);
 
-  const { data, isLoading, error } = useFetch("https://swapi.dev/api/people");
-
-  // async function getPeople(query) {
-  //   const response = await axios.get(
-  //     `https://swapi.dev/api/people/?search=${query}`
-  //   );
-  //   if (inputText !== "") {
-  //     sortingDataAsc(response.data.results, setData);
-  //     return;
-  //   }
-  //   setData(response.data.results);
-  // }
+  const { data, isLoading, error, setData } = useFetch(
+    `https://swapi.dev/api/people/?search=${debouncedSearch}`
+  );
 
   function handleChange(e) {
     setInputText(e.target.value);
@@ -36,7 +26,7 @@ const PersonsList2 = () => {
   //   // };
   //   // startLoad();
   //   //console.log(data + "useEffect x");
-  // }, [data]);
+  // }, [debouncedSearch, data]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -64,14 +54,15 @@ const PersonsList2 = () => {
       </div>
       <p>You search for: {inputText}</p>
       <hr />
-
-      {data.results.map((item) => (
-        <div key={item.url}>
-          <h1>{item.name}</h1>
-        </div>
-      ))}
+      {data && (
+        <ul>
+          {data.results.map((item) => (
+            <li key={item.url}>{item.name}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
 
-export default PersonsList2;
+export default PersonsList3;

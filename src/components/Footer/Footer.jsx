@@ -1,33 +1,13 @@
-import React, { useEffect, useState } from "react";
 import "./style.css";
+import useResize from "../hooks/useResize";
 
 const Footer = () => {
-  /* window.screen.width */
-
-  const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  function updateScreenSize() {
-    setScreenSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", updateScreenSize);
-    return () => {
-      window.removeEventListener("resize", updateScreenSize);
-    };
-  }, []);
+  const { width, height } = useResize();
 
   return (
     <div className="footer">
       <p>
-        Screen width is: {screenSize.width} px, height is: {screenSize.height}{" "}
-        px
+        Screen width is: {width} px, height is: {height} px
       </p>
     </div>
   );

@@ -1,11 +1,11 @@
 import Layout from "./components/Layout/Layout";
-import PersonsList2 from "./components/PersonsList/PersonsList2";
+import PersonsList3 from "./components/PersonsList/PersonsList3";
 
 const App = () => {
   return (
     <div>
       <Layout>
-        <PersonsList2 />
+        <PersonsList3 />
       </Layout>
     </div>
   );
